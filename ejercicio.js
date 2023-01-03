@@ -362,7 +362,7 @@ let btn16 = document.getElementById("e16")
 btn16.addEventListener('click', event => sortArr(arrNum))
 
 
-/* BEERJERCICIO 1 */
+/* NO ME SALIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO*/
 function sortBeer(arr, abvi) {
     let beerList = [];
     for (let b of arr) {
@@ -404,4 +404,86 @@ mostAbv(beers)
 /* BEERJERCICIO 3 */
 
 
-/* BEERJERCICIO 4 */ 
+/* ---------------------------------------------------------------------------- */ 
+
+
+
+
+/*        GRACIAS    FERNANDO MARZIELTI            */ 
+
+
+// 1-  Generar una función que reciba como parámetro el array de cervezas y un valor de alcohol. La función debe devolver un nuevo array con las cervezas que no excedan el nivel etílico. Cada elemento del nuevo array debe ser un objeto que tenga la propiedades nombre, alcohol (abv) y "amargor" (ibu)
+
+function ej1_noExcedenNivelEtilico(cervezas, nivelEtilico){
+    return cervezas.filter(cerve => cerve.abv<=nivelEtilico)
+    .map(cerve => ({nombre:cerve.name, abv:cerve.abv, ibu:cerve.ibu}))
+}
+
+console.log("No exceden el nivel etilico: ")
+console.log(ej1_noExcedenNivelEtilico(beers,5));
+
+// 2-  Generar una función que reciba como parámetro un array de cervezas y devuelva un nuevo array con las 10 cervezas más alcohólicas
+
+function ej2_top10Alcoholicas(cervezas){
+    return cervezas.sort((cerve1,cerve2)=>cerve2.abv-cerve1.abv).slice(0,10)
+}
+
+console.log("Top 10 cervezas mas alcoholicas: ")
+console.log(ej2_top10Alcoholicas(beers))
+
+// 3-  Generar una función que reciba como parámetro un array de cervezas y devuelva un nuevo array con las 10 cervezas menos amargas
+
+function ej3_top10MenosAmargas(cervezas){
+    return cervezas.sort((cerve1,cerve2)=>cerve1.ibu-cerve2.ibu).slice(0,10)
+}
+
+console.log("Top 10 cervezas menos amargas: ")
+console.log(ej3_top10MenosAmargas(beers))
+
+// 4-  Generar una función que reciba como parámetro un array de cervezas, un nombre de propiedad y un valor booleano. Debe devolver un nuevo array con 10 cervezas ordenadas por la propiedad ingresada como segundo argumento, de manera ascendente si el tercero es true o descendente si es false
+
+function ej4_cervezasOrdenadas(cervezas,propiedad,ascendente){
+    if(ascendente){
+        return cervezas.sort((cerve1,cerve2)=>cerve1[propiedad]-cerve2[propiedad])
+        .slice(0,10)
+    }else{
+        return cervezas.sort((cerve1,cerve2)=>cerve2[propiedad]-cerve1[propiedad])
+        .slice(0,10)
+    }
+}
+
+console.log("Top 10 cervezas ordenadas por propiedad: 'ph ascendente' ")
+console.log(ej4_cervezasOrdenadas(beers,"ph",true))
+
+console.log("Top 10 cervezas ordenadas por propiedad: 'attenuation_level descendente' ")
+console.log(ej4_cervezasOrdenadas(beers,"attenuation_level",false))
+
+// 5-  Generar una función que reciba como parámetro un array de cervezas y un id. La función debe renderizar (renderear, dibujar, pintar, llenar, etc) en un  archivo html una tabla que contenga las columnas "Name", "ABV", "IBU", y una fila por cada elemento del array. Cada fila debe tener los datos que se piden  de cada una de las cervezas.
+
+function ej5_renderizarTabla(cervezas, id){
+    let tabla=`<div id="${id}" class="table-responsive w-50 m-5">
+                <table class="table table-primary">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>ABV</th>
+                            <th>IBU</th>
+                        </tr>
+                    </thead>
+                <tbody>`
+    for(cerve of cervezas){
+        tabla+=`<tr>
+                    <td>${cerve.name}</td>
+                    <td>${cerve.abv}</td>
+                    <td>${cerve.ibu}</td>
+                </tr>`
+    }  
+    tabla+= `   </tbody>
+            </table>
+        </div>`
+    document.getElementsByTagName("body")[0].innerHTML+=tabla;
+}
+
+console.log('Tabla generada con id "nuevaTabla"')
+ej5_renderizarTabla(beers,"nuevaTabla")
+
