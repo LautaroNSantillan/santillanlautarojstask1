@@ -40,7 +40,7 @@ function generateTemplate(eventObj) {
                         <p class="card-text">${event.description}</p>
                                 <div class="price-btn">
                                     <p> Price: $${event.price}</p>
-                                    <a href="./details.html" class="btn btn-primary">Details</a>
+                                    <a href="./details.html?id=${event._id} " class="btn btn-primary">Details</a>
                                 </div>
                         </div>
                     </div>
@@ -165,26 +165,3 @@ function generateCheckbox(arr) {
 checkBoxDiv.innerHTML = generateCheckbox(noRepeatCategories)
 /*  */
 
-
-/* -----------DETAILS---------- */ 
-
-const detailsDiv= document.getElementById("details-div")
-
-
-function generateDetails(eventObj) {
-    
-    eventObj.forEach(event => {
-        template = ` 
-        <div class="details-div">
-        <img src="./assets/images/logo_amazing_events.png" alt="EVENT">
-        <div class="p-h3">
-            <h3> [EVENT]</h3>
-            <p>[DESCRIPTION]</p>
-        </div>
-    </div>      
-    `
-    }); return template
-}
-function renderDetails(obj, place) {
-    place.innerHTML = generateDetails(obj)
-}
