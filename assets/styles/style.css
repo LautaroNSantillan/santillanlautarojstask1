@@ -157,6 +157,11 @@ body {
   padding-bottom: 2rem;
 }
 
+.form-check{
+  height: fit-content;
+}
+
+
 .price-btn {
   display: flex;
   justify-content: space-around;
@@ -166,6 +171,11 @@ body {
   margin: 0;
  
 }
+
+#check-search {
+ justify-content: space-between;
+}
+
 
 .price-btn p{
   margin-top: auto;
