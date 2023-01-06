@@ -2,104 +2,36 @@
 let allEvents = [].concat(data.events)
 let pastEvents = []
 let upcomingEvents = []
-let foodEvents = []
-let museumEvents = []
-let costumeEvents = []
-let musicEvents = []
-let raceEvents = []
-let bookEvents = []
-let cinemaEvents = []
+let arrEvents = generateCards();
+console.log(generateCards())
+console.log(arrEvents)
+console.log(document.location.pathname)
+
+
 
 /*   FILTER BY DATE*/
 function filterEventsDate(eventObj) {
     for (let event of eventObj.events) {
         if (event.date <= eventObj.currentDate) {
-            upcomingEvents.push(event)
-        } else {
             pastEvents.push(event)
+        } else {
+            upcomingEvents.push(event)
         }
     }
-    console.log(pastEvents)
-    console.log(upcomingEvents)
+
 }
-
-/*    FOOD FAIR   */
-function filterEventsFood(eventObj) {
-    for (let event of eventObj.events) {
-        if (event.category == "Food Fair") {
-            foodEvents.push(event)
-        }
-    } console.log(foodEvents)
-}
-
-/* MUSEUM */
-function filterEventsMuseum(eventObj) {
-    for (let event of eventObj.events) {
-        if (event.category == "Museum") {
-            museumEvents.push(event)
-        }
-    }
-}
-
-/* COSTUME */
-function filterEventsCostume(eventObj) {
-    for (let event of eventObj.events) {
-        if (event.category == "Costume Party") {
-            costumeEvents.push(event)
-        }
-    }
-}
-
-/* MUSIC */
-function filterEventsMusic(eventObj) {
-    for (let event of eventObj.events) {
-        if (event.category == "Music Concert") {
-            musicEvents.push(event)
-        }
-    }
-}
-
-/* RACE */
-function filterEventsRace(eventObj) {
-    for (let event of eventObj.events) {
-        if (event.category == "Race") {
-            raceEvents.push(event)
-        }
-    }
-}
-
-/* BOOK */
-function filterEventsBook(eventObj) {
-    for (let event of eventObj.events) {
-        if (event.category == "Book Exchange") {
-            bookEvents.push(event)
-        }
-    }
-}
-
-/* CINEMA */
-function filterEventsCinema(eventObj) {
-    for (let event of eventObj.events) {
-        if (event.category == "Cinema") {
-            cinemaEvents.push(event)
-        }
-    }
-}
-
-
-
-filterEventsFood(data)
+console.log(allEvents, pastEvents, upcomingEvents)
 
 let sectionCards = document.getElementById("aevents")
 
-console.log(document.location.pathname)
 
 
-/*    TEMPLATE    */ 
-let template = ''
-function generateTemplate(eventObj){   
-    for (let event of eventObj) {
-        template += ` 
+/*    TEMPLATE    */
+
+function generateTemplate(eventObj) {
+    let template = ''
+    eventObj.forEach(event => {
+        innertemplate = ` 
                 <div class=" col-12 col-md-6 col-xl-4 cardsTopBot">
                     <div class="card w-100">
                         <img src="${event.image}" class="img-card" alt="${event.category}">
@@ -114,30 +46,145 @@ function generateTemplate(eventObj){
                     </div>
                 </div>           
     `
-    } 
+        template += innertemplate
+    }); return template
 }
 
-/* GENERATE CARDS ACCORDING TO PAGE */ 
+
+document.addEventListener("DOMContentLoaded", function () {
+    renderCards(generateCards(), sectionCards);
+});
+
+/* GENERATE CARDS ACCORDING TO PAGE */
 
 filterEventsDate(data)
 
-function generateCards(eventObj, place) {
-    if(document.location.pathname =="/home.html"){
-        eventObj=allEvents
-    }else if(document.location.pathname =="/past_events.html"){
-        eventObj=pastEvents
-    }else if(document.location.pathname =="/upcoming_events.html"){
-        eventObj=upcomingEvents
+
+
+function generateCards() {
+    if (document.location.pathname == "/index.html") {
+        return allEvents
+    } else if (document.location.pathname == "/past_events.html") {
+        return pastEvents
+    } else if (document.location.pathname == "/upcoming_events.html") {
+        return upcomingEvents
+
     }
-   generateTemplate(eventObj)
-    place.innerHTML = template
 }
-generateCards(allEvents, sectionCards)
+
+
+function renderCards(arr, place) {
+    place.innerHTML = generateTemplate(arr)
+}
+
+function renderCardsCheck(arr, place) {
+    place.innerHTML += generateTemplate(arr)
+}
+
+function generateNoResults(msg){
+    sectionCards.innerHTML=msg
+}
+
+
+
+/* ---------------------TASK            3 ------------------------*/
+
+const searchBar = document.getElementById("search-bar")
+const checkBoxDiv = document.getElementById("check-search")
+checkBoxDiv.addEventListener('change', crossFilter)
 
 
 
 
 
+searchBar.addEventListener('input', crossFilter)
+console.log(searchBar.value)
+
+function textSearch(input) {
+    let textFilter = arrEvents.filter(event => event.name.toLowerCase().includes(input.value.toLowerCase()))
+    return textFilter
+}
+
+function checkSearch(arr) {
+    var checkFilter;/* PIDO PERDON PADRE PUES HE PECADO */ 
+    const checkBox =Array.from(document.querySelectorAll( 'input[type="checkbox"]:checked' ));
+    let arrCheckBox = checkBox.map(i=>i.value)
+        checkFilter = arr.filter(event => arrCheckBox.includes(event.category))
+    
+    console.log(arrCheckBox)
+    return checkFilter  
+}
 
 
+function crossFilter(){
+    const checkBoxcross =Array.from(document.querySelectorAll( 'input[type="checkbox"]' ))
+    if(searchBar.value!=="" && checkBoxcross.some(c=>c.checked)){
+            let filteredSearch=textSearch(searchBar)
+            let filteredCheck=checkSearch(filteredSearch)
+            renderCards(filteredCheck, sectionCards)
+            if(filteredCheck.length===0){
+                let noRes=`<h2 class="alert">No results available :(   ...</h2>`
+                generateNoResults(noRes)
+        }
+        
+    }else if(searchBar.value!=="" && checkBoxcross.every(c=>!c.checked)){
+        let filteredSearch=textSearch(searchBar)
+    renderCards(filteredSearch, sectionCards)
+    if(filteredSearch.length===0){
+        let noRes=`<h2 class="alert">No results available :(   ...</h2>`
+        generateNoResults(noRes)
+}
+    }else if (searchBar.value==="" && checkBoxcross.some(c=>c.checked)){
+        let filteredCheck=checkSearch(arrEvents)
+        renderCards(filteredCheck, sectionCards)
+        if(filteredCheck.length===0){
+            let noRes=`<h2 class="alert">No results available :(   ...</h2>`
+            generateNoResults(noRes)
+    }
+    }
+    else {
+        renderCards(arrEvents, sectionCards)
+    }
+  }  
 
+const noRepeatCategories = Array.from(new Set(data.events.map(e => e.category)))
+
+
+/*  */
+function generateCheckbox(arr) {
+    let templateCheck = ""
+    arr.forEach(category => {
+        templateCheck += `<div class="form-check d-flex ">   
+        <label class="form-check-label">${category}
+        <input class="form-check-input" type="checkbox" value="${category}">
+        </label>
+        </div>`
+    })
+    return templateCheck
+}
+checkBoxDiv.innerHTML = generateCheckbox(noRepeatCategories)
+/*  */
+
+
+/* -----------DETAILS---------- */ 
+
+const detailsDiv= document.getElementById("details-div")
+
+
+function generateDetails(eventObj) {
+    
+    eventObj.forEach(event => {
+        template = ` 
+        <div class="details-div">
+        <img src="./assets/images/logo_amazing_events.png" alt="EVENT">
+        <div class="p-h3">
+            <h3> [EVENT]</h3>
+            <p>[DESCRIPTION]</p>
+        </div>
+    </div>      
+    `
+    }); return template
+}
+function renderDetails(obj, place) {
+    place.innerHTML = generateDetails(obj)
+}
