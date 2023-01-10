@@ -222,8 +222,7 @@ table {
   text-align: center;
   vertical-align: middle;
   width: 80%;
-  border: 1px solid #9ce1d8;
-  border-collapse: collapse;
+  border: none;
 }
 
 th,
@@ -237,21 +236,36 @@ td {
 }
 
 tbody tr:nth-child(odd) {
-  background-color: #86e2d1;
+  background-color: #86e2d1cc;
 }
 
 tbody tr:nth-child(even) {
-  background-color: #9ce1d8;
+  background-color: #9ce1d8c0;
 }
 
 tr [colspan="3"] {
   color: white;
-  background-color: #679787;
+  background-color: #679787c9;
   font-size: 0.875rem;
   text-transform: uppercase;
   letter-spacing: 2%;
+  border-radius: .5rem;
 }
-
+.row-th-td th, td{
+  width: 33%;
+}
+th:first-of-type {
+  border-top-left-radius: 10px;
+}
+th:last-of-type {
+  border-top-right-radius: 10px;
+}
+tr:last-of-type td:first-of-type {
+  border-bottom-left-radius: 10px;
+}
+tr:last-of-type td:last-of-type {
+  border-bottom-right-radius: 10px;
+}
 .space {
   margin-top: 0.25rem !important;
   margin-bottom: 0.25rem !important;
@@ -264,6 +278,10 @@ tr [colspan="3"] {
   width: 60%;
   flex-direction: column;
   margin: auto;
+}
+
+.cu-form input{
+  opacity: 70%;
 }
 .cu-name input,
 .cu-email input {

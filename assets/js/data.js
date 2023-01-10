@@ -21,9 +21,13 @@ async function getdata() {
 
 async function loadAPI() {
     await getdata()
-  
-    stats()
-    console.log("dataapi", data)
+  if (document.location.pathname == "/stats.html") {
+        stats()
+    }else if (document.location.pathname == "/details.html") {
+        details()
+    }else{
+        main()
+    }
     
 }
 

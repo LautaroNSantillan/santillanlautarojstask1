@@ -32,9 +32,7 @@ function main() {
             return pastEvents
         } else if (document.location.pathname == "/upcoming_events.html") {
             return upcomingEvents
-        } else if (document.location.pathname == "/details.html") {
-            details()
-        }
+        } 
     }
 
     function textSearch(input) {

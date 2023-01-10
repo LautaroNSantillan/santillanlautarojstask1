@@ -31,7 +31,7 @@ function stats() {
          <td> ${lowestAttendance()} </td>
           <td> ${largestCap()} </td></tr>
     `
-        place.innerHTML+=template
+        place.innerHTML += template
     } createRowStats1(stats1)
 
     function highestAttendance() {
@@ -65,45 +65,44 @@ function stats() {
     }
 
     function createRowStats2(eventArr, place) {
-        let innertemplate = '';
         let template = '';
-        const upcomingArr = eventArr.map(({ name, capacity, estimate, price, category }) => ({ name, capacity, estimate, price, category }))
-        upcomingArr.forEach((e) => {
-            e.revenue = e.price * e.estimate;
-            e.attendance = e.estimate * 100 / e.capacity;
-        })
+        let usedArr = [];
+        if (eventArr[0].estimate) {
+            usedArr = eventArr.map(({ name, capacity, estimate, price, category }) => ({ name, capacity, estimate, price, category }))
+            usedArr.forEach((e) => {
+                e.revenue = e.price * e.estimate;
+                e.attendance = e.estimate * 100 / e.capacity;
+                return usedArr
+            })
+        } else {
+            usedArr = eventArr.map(({ name, capacity, assistance, price, category }) => ({ name, capacity, assistance, price, category }))
+            usedArr.forEach((e) => {
+                e.revenue = e.price * e.assistance;
+                e.attendance = e.assistance * 100 / e.capacity;
+                return usedArr
+            })
+        }
 
-
-        const objFromArr = upcomingArr.reduce((acc, cv) => {
+        const objFromArr = usedArr.reduce((acc, cv) => {
             let category = cv.category
             if (acc[category] == null) {
                 acc[category] = []
                 acc[category].push(cv)
                 acc[category].counter = 1
-                //console.log(acc[category][0])
             }
             else if (cv.category === acc[category][0].category) {
                 acc[category][0].attendance += cv.attendance
                 acc[category][0].revenue += cv.revenue
                 acc[category].counter += 1
             }
-
-            // console.log(cv)
-            //console.log(cv.attendance)
-
-
-
             return acc
         }, {});
-        console.log(objFromArr)
-        //console.log(Object.keys(objFromArr), Object.values(objFromArr))
-        // console.log(objFromArr['Food Fair'][0])
-
+       
         function renderStats() {
 
-   for (let k in objFromArr) {
+            for (let k in objFromArr) {
                 for (let e of objFromArr[k]) {
-                    console.log("eeeeee", e)
+                    
                     template += ` 
             <tr>
             <td> ${e.category} </td> 
@@ -111,16 +110,12 @@ function stats() {
             <td> ${Math.round(e.attendance / objFromArr[k].counter)}% </td>
             </tr>
         `
-                    console.log("dibujadi")
-                     
                 }
-
-            
-        } return template
-}
-
+            } return template
+        }
         place.innerHTML += renderStats()
-    } createRowStats2(upcomingEvents, stats2)
+    }
+    createRowStats2(upcomingEvents, stats2)
     createRowStats2(pastEvents, stats3)
 
 
