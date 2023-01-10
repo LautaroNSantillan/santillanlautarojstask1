@@ -1,9 +1,16 @@
+function details(){
+
 const detailsDiv= document.getElementById("details-div")
 let urlParam = location.search//str
 let params = new URLSearchParams(urlParam)//obj
 let id = params.get("id")
 let foundId= data.events.find(e=>e._id==id)
 console.log(foundId)
+
+function assistanceOrEstimate(e){
+    let show= e.assistance? `Assistance: ${e.assistance}` : `Estimate: ${e.estimate}`
+    return show
+}
 
 function createDetails(e,place){
     
@@ -17,7 +24,7 @@ function createDetails(e,place){
         <p>Category: ${e.category}</p>
         <p>Place: ${e.place}</p>
         <p>Capacity: ${e.capacity}</p>
-        <p>Asistance: ${e.assistance}</p>
+        <p>${assistanceOrEstimate(e)}</p>
         <p>Price: ${e.price}</p>
         <p>Date: ${e.date}</p>
     </div>
@@ -27,3 +34,4 @@ place.appendChild(div)
 }
 
 createDetails(foundId, detailsDiv)
+ }
